@@ -15,9 +15,10 @@ import javax.swing.JFileChooser;
  * @author juanca
  */
 public class Home extends javax.swing.JFrame {
-    
+
     private Line[] lines;
-    
+    private String[] books;
+
     /**
      * Creates new form Home
      */
@@ -103,13 +104,14 @@ public class Home extends javax.swing.JFrame {
                             .addGroup(mainLayout.createSequentialGroup()
                                 .addComponent(txtSearch)
                                 .addGap(26, 26, 26)
-                                .addComponent(btnSearch))))
-                    .addGroup(mainLayout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(515, 515, 515))
+                                .addComponent(btnSearch)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(mainLayout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(188, 188, 188)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62))
         );
         mainLayout.setVerticalGroup(
             mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,7 +124,7 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addGap(66, 66, 66)
                 .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -133,7 +135,7 @@ public class Home extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,35 +145,88 @@ public class Home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileActionPerformed
-        // TODO add your handling code here:
-        String curDir = System.getProperty("user.dir");
-        File userDir = new File(curDir);
-        JFileChooser chooser = new JFileChooser(userDir);
-        
-        chooser.setDialogTitle("Select a .txt file");
-        
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            KWIC kwic = new KWIC(file);
-            lines = kwic.getLineIndex();
-            
-            String booksTxt = "";
-            for (int i = 0; i < lines.length; i++) {
-                booksTxt += (i+1) + ": "+ lines[i].getLine() + "\n";
-            }
-            txtIndex.setText(booksTxt);
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        try {
+            String search = txtSearch.getText().toLowerCase();
+            String[] arrSearch = search.split(" ");
+            int[] arrResult = new int[books.length];
+            int kont = 0;
 
+            for (int i = 0; i < arrResult.length; i++) {
+                arrResult[i] = -1;
+            }
+
+            for (int i = 0; i < lines.length; i++) {
+                String booksTitle = "";
+                booksTitle += lines[i].getLine().toLowerCase();
+                String[] arrLine = booksTitle.split(" ");
+
+                int c = 0;
+                for (int j = 0; j < arrSearch.length; j++) {
+                    if (arrLine.length >= arrSearch.length) {
+                        if (arrSearch[j].equals(arrLine[j])) {
+                            c++;
+                        }
+                    }
+
+                }
+                if (c == arrSearch.length) {
+                    arrResult[kont] = lines[i].getIndex();
+                    kont++;
+                }
+            }
+            int kontArr = 0;
+            for (int i = 0; i < arrResult.length; i++) {
+                if (arrResult[i] >= 0) {
+                    kontArr++;
+                }
+            }
+
+            String[] arrBooksResult = new String[kontArr];
+            for (int i = 0; i < kontArr; i++) {
+                for (int j = 0; j < books.length; j++) {
+                    if (arrResult[i] == j) {
+                        arrBooksResult[i] = books[j];
+                    }
+                }
+            }
+
+            String res = "";
+            for (int i = 0; i < arrBooksResult.length; i++) {
+                res += (i + 1) + ": " + arrBooksResult[i] + "\n";
+            }
+            txtResult.setText(res);
+        } catch (Exception e) {
+            System.err.println(e);
         }
-    }//GEN-LAST:event_btnFileActionPerformed
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+    private void btnFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSearchActionPerformed
+        String curDir = System.getProperty("user.dir");
+        File userDir = new File(curDir);
+        JFileChooser chooser = new JFileChooser(userDir);
+
+        chooser.setDialogTitle("Select a .txt file");
+
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            KWIC kwic = new KWIC(file);
+            lines = kwic.getLineIndex();
+            books = kwic.getCharacters().getLines();
+
+            String booksTxt = "";
+            for (int i = 0; i < lines.length; i++) {
+                booksTxt += (i + 1) + ": " + lines[i].getLine() + "\n";
+            }
+            txtIndex.setText(booksTxt);
+
+        }
+    }//GEN-LAST:event_btnFileActionPerformed
 
     /**
      * @param args the command line arguments
