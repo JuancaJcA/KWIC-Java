@@ -73,4 +73,15 @@ public class CircularShifter {
         }
         return result.substring(0, result.length() - 1);
     }
+
+    @Override
+    public String toString() {
+        String msg = "CircularShifter{";
+        for(int i = 0; i < lines.length;i++){
+            msg += "\n shifted=" + lines[i].toString();
+        }
+        msg += "\n }";
+        return msg;
+    }
+    
 }
