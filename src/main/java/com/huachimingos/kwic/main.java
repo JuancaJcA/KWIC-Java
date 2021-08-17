@@ -1,4 +1,3 @@
-
 package com.huachimingos.kwic;
 
 import com.huachimingos.kwic.kwic.CircularShifter;
