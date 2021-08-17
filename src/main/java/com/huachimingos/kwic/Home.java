@@ -5,6 +5,14 @@
  */
 package com.huachimingos.kwic;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author juanca
@@ -96,14 +104,13 @@ public class Home extends javax.swing.JFrame {
                             .addGroup(mainLayout.createSequentialGroup()
                                 .addComponent(txtSearch)
                                 .addGap(26, 26, 26)
-                                .addComponent(btnSearch)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainLayout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+                                .addComponent(btnSearch))))
+                    .addGroup(mainLayout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(515, 515, 515))
         );
         mainLayout.setVerticalGroup(
             mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,6 +146,42 @@ public class Home extends javax.swing.JFrame {
 
     private void btnFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileActionPerformed
         // TODO add your handling code here:
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Select a .txt file");
+        
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File f = chooser.getSelectedFile();
+            System.out.println(f);
+
+            int arrSize = 0;
+            try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+                while (br.ready()) {
+                    br.readLine();
+                    arrSize++;
+                }
+            }catch (Exception e){
+                
+            }
+            String[] result = new String[arrSize];
+            try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+                int c = 0;
+                while (br.ready()) {
+                    result[c] = br.readLine();
+                    c++;
+                }
+            }catch (Exception e){
+                
+            }
+            String booksTxt = "";
+            for (int i = 0; i < arrSize; i++) {
+                booksTxt += (i+1) + ": "+ result[i] + "\n";
+            }
+            txtIndex.setText(booksTxt);
+            //txtIndex.append(booksTxt);
+
+        } else {
+           
+        }
     }//GEN-LAST:event_btnFileActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
