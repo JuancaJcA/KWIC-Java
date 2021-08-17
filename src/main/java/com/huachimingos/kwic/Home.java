@@ -6,6 +6,7 @@
 package com.huachimingos.kwic;
 
 import com.huachimingos.kwic.kwic.KWIC;
+import com.huachimingos.kwic.kwic.Line;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -14,6 +15,8 @@ import javax.swing.JFileChooser;
  * @author juanca
  */
 public class Home extends javax.swing.JFrame {
+    
+    private Line[] lines;
     
     /**
      * Creates new form Home
@@ -142,20 +145,23 @@ public class Home extends javax.swing.JFrame {
 
     private void btnFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFileActionPerformed
         // TODO add your handling code here:
-        JFileChooser chooser = new JFileChooser();
+        String curDir = System.getProperty("user.dir");
+        File userDir = new File(curDir);
+        JFileChooser chooser = new JFileChooser(userDir);
+        
         chooser.setDialogTitle("Select a .txt file");
         
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             KWIC kwic = new KWIC(file);
+            lines = kwic.getLineIndex();
+            
             String booksTxt = "";
-            for (int i = 0; i < kwic.getLineIndex().length; i++) {
-                booksTxt += (i+1) + ": "+ kwic.getLineIndex()[i].getLine() + "\n";
+            for (int i = 0; i < lines.length; i++) {
+                booksTxt += (i+1) + ": "+ lines[i].getLine() + "\n";
             }
             txtIndex.setText(booksTxt);
 
-        } else {
-           
         }
     }//GEN-LAST:event_btnFileActionPerformed
 

@@ -21,11 +21,11 @@ public class KWIC {
     public KWIC(File file) {
         //Applying KWIC
         this.input = new Input(file);
-        this.characters = new Characters(input.getResult());
-        this.shifter = new CircularShifter(characters.getLines());
-        this.alphabetizer = new Alphabetizer(shifter.getLines());
+        this.characters = new Characters(this.input.getResult());
+        this.shifter = new CircularShifter(this.characters.getLines());
+        this.alphabetizer = new Alphabetizer(this.shifter.getLines());
             
-        lineIndex = alphabetizer.getLines();
+        this.lineIndex = this.alphabetizer.getLines();
     }
 
     public Input getInput() {
