@@ -36,5 +36,10 @@ public class Line {
     public void setIndex(int index) {
         this.index = index;
     }
+
+    @Override
+    public String toString() {
+        return "Line{" + "line=" + line + ", index=" + index + '}';
+    }
     
 }

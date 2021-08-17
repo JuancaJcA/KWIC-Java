@@ -5,8 +5,6 @@
  */
 package com.huachimingos.kwic.kwic;
 
-import java.sql.DriverManager;
-
 /**
  *
  * @author martin
@@ -32,8 +30,28 @@ public class CircularShifter {
     private Line[] circularShift(String[] lines){
         int wordCount = countWords(lines);
         Line[] result = new Line[wordCount];
+        int currentIndex = 0;
+        int lineIndex = 0;
         for(String line : lines){
-            String[] division = line.split(line);
+            String[] words = line.split(" ");
+            int lastIndex = words.length - 1;
+            if(lastIndex == 0){
+                result[currentIndex] = new Line(arrayToString(words), lineIndex);
+                currentIndex++;
+            }
+            else{
+                result[currentIndex] = new Line(arrayToString(words), lineIndex);
+                currentIndex++;
+                for(int i = 0; i < lastIndex; i++){
+                    String[] newWords = new String[words.length];
+                    System.arraycopy(words, 0, newWords, 1, words.length - 1);
+                    newWords[0] = words[words.length - 1];
+                    result[currentIndex] = new Line(arrayToString(newWords), lineIndex);
+                    currentIndex++;
+                    words = newWords;
+                }
+            }
+            lineIndex++;
         }
         return result;
     }
@@ -45,5 +63,14 @@ public class CircularShifter {
             total += division.length;
         }
         return total;
+    }
+    
+    private String arrayToString(String[] array){
+        String result = "";
+        for(String word : array){
+            result += word;
+            result += " ";
+        }
+        return result.substring(0, result.length() - 1);
     }
 }
