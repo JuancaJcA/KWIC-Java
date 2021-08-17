@@ -1,4 +1,3 @@
-
 package com.huachimingos.kwic;
 
 public class main {
