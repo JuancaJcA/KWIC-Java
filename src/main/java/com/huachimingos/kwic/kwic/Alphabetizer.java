@@ -10,6 +10,7 @@ package com.huachimingos.kwic.kwic;
  * @author martin
  */
 public class Alphabetizer {
+
     Line[] lines;
 
     public Alphabetizer() {
@@ -28,15 +29,15 @@ public class Alphabetizer {
     public void setLines(Line[] lines) {
         this.lines = lines;
     }
-    
+
     @Override
     public String toString() {
         String msg = "Alphabetizer{";
-        for(int i = 0; i < lines.length;i++){
+        for (int i = 0; i < lines.length; i++) {
             msg += "\n sorted=" + lines[i].toString();
         }
         msg += "\n }";
         return msg;
     }
-    
+
 }

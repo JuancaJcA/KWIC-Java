@@ -10,6 +10,7 @@ package com.huachimingos.kwic.kwic;
  * @author martin
  */
 public class CircularShifter {
+
     Line[] lines;
 
     public CircularShifter() {
@@ -26,23 +27,22 @@ public class CircularShifter {
     public void setLines(String[] lines) {
         this.lines = this.circularShift(lines);
     }
-    
-    private Line[] circularShift(String[] lines){
+
+    private Line[] circularShift(String[] lines) {
         int wordCount = countWords(lines);
         Line[] result = new Line[wordCount];
         int currentIndex = 0;
         int lineIndex = 0;
-        for(String line : lines){
+        for (String line : lines) {
             String[] words = line.split(" ");
             int lastIndex = words.length - 1;
-            if(lastIndex == 0){
+            if (lastIndex == 0) {
                 result[currentIndex] = new Line(arrayToString(words), lineIndex);
                 currentIndex++;
-            }
-            else{
+            } else {
                 result[currentIndex] = new Line(arrayToString(words), lineIndex);
                 currentIndex++;
-                for(int i = 0; i < lastIndex; i++){
+                for (int i = 0; i < lastIndex; i++) {
                     String[] newWords = new String[words.length];
                     System.arraycopy(words, 0, newWords, 1, words.length - 1);
                     newWords[0] = words[words.length - 1];
@@ -55,19 +55,19 @@ public class CircularShifter {
         }
         return result;
     }
-    
-    private int countWords(String[] lines){
+
+    private int countWords(String[] lines) {
         int total = 0;
-        for(String line : lines){
+        for (String line : lines) {
             String[] division = line.split(" ");
             total += division.length;
         }
         return total;
     }
-    
-    private String arrayToString(String[] array){
+
+    private String arrayToString(String[] array) {
         String result = "";
-        for(String word : array){
+        for (String word : array) {
             result += word;
             result += " ";
         }
@@ -77,11 +77,11 @@ public class CircularShifter {
     @Override
     public String toString() {
         String msg = "CircularShifter{";
-        for(int i = 0; i < lines.length;i++){
+        for (int i = 0; i < lines.length; i++) {
             msg += "\n shifted=" + lines[i].toString();
         }
         msg += "\n }";
         return msg;
     }
-    
+
 }

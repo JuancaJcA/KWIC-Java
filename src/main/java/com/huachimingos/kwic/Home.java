@@ -5,9 +5,8 @@
  */
 package com.huachimingos.kwic;
 
-import java.io.BufferedReader;
+import com.huachimingos.kwic.kwic.KWIC;
 import java.io.File;
-import java.io.FileReader;
 import javax.swing.JFileChooser;
 
 /**
@@ -15,7 +14,7 @@ import javax.swing.JFileChooser;
  * @author juanca
  */
 public class Home extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form Home
      */
@@ -147,34 +146,13 @@ public class Home extends javax.swing.JFrame {
         chooser.setDialogTitle("Select a .txt file");
         
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File f = chooser.getSelectedFile();
-            System.out.println(f);
-
-            int arrSize = 0;
-            try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-                while (br.ready()) {
-                    br.readLine();
-                    arrSize++;
-                }
-            }catch (Exception e){
-                
-            }
-            String[] result = new String[arrSize];
-            try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-                int c = 0;
-                while (br.ready()) {
-                    result[c] = br.readLine();
-                    c++;
-                }
-            }catch (Exception e){
-                
-            }
+            File file = chooser.getSelectedFile();
+            KWIC kwic = new KWIC(file);
             String booksTxt = "";
-            for (int i = 0; i < arrSize; i++) {
-                booksTxt += (i+1) + ": "+ result[i] + "\n";
+            for (int i = 0; i < kwic.getLineIndex().length; i++) {
+                booksTxt += (i+1) + ": "+ kwic.getLineIndex()[i].getLine() + "\n";
             }
             txtIndex.setText(booksTxt);
-            //txtIndex.append(booksTxt);
 
         } else {
            
