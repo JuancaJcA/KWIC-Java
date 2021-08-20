@@ -165,18 +165,23 @@ public class Home extends javax.swing.JFrame {
 
                 for (int j = 0; j < arrSearch.length; j++) {
                     if (arrLine.length >= arrSearch.length) {
-                        for (int k = 0; k < arrLine.length; k++) {
+                        /*for (int k = 0; k < arrLine.length; k++) {
                             if (arrSearch[j].equals(arrLine[k])) {
                                 c++;
                                 break;
                             }
+                        }*/
+                        
+                        if (arrSearch[j].equals(arrLine[j])) {
+                            c++;
                         }
                     }               
                 }
                 
                 if (c == arrSearch.length) {
-
-                    int bookIndex = lines[i].getIndex();
+                    arrResult[kont] = lines[i].getIndex();
+                    kont++;
+                    /*int bookIndex = lines[i].getIndex();
                     boolean isAddedBook = false;
 
                     for (int j = 0; j < arrResult.length; j++) {
@@ -191,7 +196,7 @@ public class Home extends javax.swing.JFrame {
                         arrResult[kont] = lines[i].getIndex();
                         kont++;
                     }
-                    
+                    */
                 }
             }
             int kontArr = 0;
@@ -235,12 +240,12 @@ public class Home extends javax.swing.JFrame {
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             KWIC kwic = new KWIC(file);
-            lines = kwic.getLineIndex();
+            lines = kwic.getOutput().getLines();
             books = kwic.getCharacters().getLines();
 
             String booksTxt = "";
-            for (int i = 0; i < lines.length; i++) {
-                booksTxt += (i + 1) + ": " + lines[i].getLine() + "\n";
+            for (int i = 0; i < kwic.getLineIndex().length; i++) {
+                booksTxt += (i + 1) + ": " + kwic.getLineIndex()[i].getLine() + "\n";
             }
             txtIndex.setText(booksTxt);
 

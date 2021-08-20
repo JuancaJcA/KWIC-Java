@@ -7,7 +7,7 @@ package com.huachimingos.kwic.kwic;
 
 /**
  *
- * @author martin
+ * @author sergio
  */
 public class CircularShifter {
 
@@ -29,6 +29,8 @@ public class CircularShifter {
     }
 
     private Line[] circularShift(String[] lines) {
+        String[] ignoreWords = {"en", "un", "una", "unos", "unas", "el", "la", "los", "las", "y", "u", "e", "o", "de", "del", "a", "mi", "es", "al", "se"};
+
         int wordCount = countWords(lines);
         Line[] result = new Line[wordCount];
         int currentIndex = 0;
@@ -40,20 +42,49 @@ public class CircularShifter {
                 result[currentIndex] = new Line(arrayToString(words), lineIndex);
                 currentIndex++;
             } else {
-                result[currentIndex] = new Line(arrayToString(words), lineIndex);
-                currentIndex++;
+                boolean ignorable1 = false;
+                for (String ignoreWord : ignoreWords) {
+                    if (ignoreWord.equalsIgnoreCase(words[0])) {
+                        ignorable1 = true;
+                    }
+                }
+                if (!ignorable1) {
+                    result[currentIndex] = new Line(arrayToString(words), lineIndex);
+                    currentIndex++;
+                }
+
                 for (int i = 0; i < lastIndex; i++) {
                     String[] newWords = new String[words.length];
                     System.arraycopy(words, 0, newWords, 1, words.length - 1);
                     newWords[0] = words[words.length - 1];
-                    result[currentIndex] = new Line(arrayToString(newWords), lineIndex);
-                    currentIndex++;
+                    boolean ignorable = false;
+                    for (String ignoreWord : ignoreWords) {
+                        if (ignoreWord.equalsIgnoreCase(newWords[0])) {
+                            ignorable = true;
+                        }
+                    }
+                    if (!ignorable) {
+                        result[currentIndex] = new Line(arrayToString(newWords), lineIndex);
+                        currentIndex++;
+                    }
                     words = newWords;
                 }
             }
             lineIndex++;
         }
-        return result;
+        
+        int realLength = 0;
+        for(int i = 0; i < result.length;i++){
+            if(result[i] != null){
+                realLength++;
+            }
+        }
+        
+        Line[] realResult = new Line[realLength];
+        for(int i = 0; i < realLength;i++){
+            realResult[i] = result[i];
+        }
+        return realResult;
     }
 
     private int countWords(String[] lines) {
@@ -78,7 +109,12 @@ public class CircularShifter {
     public String toString() {
         String msg = "CircularShifter{";
         for (int i = 0; i < lines.length; i++) {
-            msg += "\n shifted=" + lines[i].toString();
+            if (lines[i] != null) {
+                msg += "\n shifted=" + lines[i].toString();
+            }
+            else{
+                msg += "\n null";
+            }
         }
         msg += "\n }";
         return msg;

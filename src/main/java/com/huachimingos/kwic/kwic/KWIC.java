@@ -16,6 +16,7 @@ public class KWIC {
     Characters characters;
     CircularShifter shifter;
     Alphabetizer alphabetizer;
+    Output output;
     Line[] lineIndex;
 
     public KWIC(File file) {
@@ -24,12 +25,18 @@ public class KWIC {
         this.characters = new Characters(this.input.getResult());
         this.shifter = new CircularShifter(this.characters.getLines());
         this.alphabetizer = new Alphabetizer(this.shifter.getLines());
+        this.output = new Output(this.alphabetizer.getLines());
+        System.out.println(output.toString());
             
         this.lineIndex = this.alphabetizer.getLines();
     }
 
     public Input getInput() {
         return input;
+    }
+
+    public Output getOutput() {
+        return output;
     }
 
     public Characters getCharacters() {
