@@ -162,17 +162,36 @@ public class Home extends javax.swing.JFrame {
                 String[] arrLine = booksTitle.split(" ");
 
                 int c = 0;
+
                 for (int j = 0; j < arrSearch.length; j++) {
                     if (arrLine.length >= arrSearch.length) {
-                        if (arrSearch[j].equals(arrLine[j])) {
-                            c++;
+                        for (int k = 0; k < arrLine.length; k++) {
+                            if (arrSearch[j].equals(arrLine[k])) {
+                                c++;
+                                break;
+                            }
                         }
+                    }               
+                }
+                
+                if (c == arrSearch.length) {
+
+                    int bookIndex = lines[i].getIndex();
+                    boolean isAddedBook = false;
+
+                    for (int j = 0; j < arrResult.length; j++) {
+                       if (arrResult[j] == bookIndex) {
+                           isAddedBook = true;
+                           break;
+                       }
                     }
 
-                }
-                if (c == arrSearch.length) {
-                    arrResult[kont] = lines[i].getIndex();
-                    kont++;
+                    if (!isAddedBook)
+                    {
+                        arrResult[kont] = lines[i].getIndex();
+                        kont++;
+                    }
+                    
                 }
             }
             int kontArr = 0;
